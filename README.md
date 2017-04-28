@@ -44,18 +44,6 @@ After provisioning the node and installing Docker EE Engine it is highly recomme
 
 The best practice for configuring DeviceMapper with Docker is to provide a spare block device to create a logical volume as a thinpool for the graph driver storage. In Virtual Box you may manually create a new disk and attach it to the VM as shown in the images below:
 
-#### Create a Disk
-![Create Disk](images/centos-disk-create.png?raw=true)
-
-#### Choose VMDK Disk type
-![Disk Type](images/centos-disk-type.png?raw=true)
-
-#### Select Disk Size
-![Disk Size](images/centos-disk-size.png?raw=true)
-
-#### Final Disk Config
-![Final Disk Config](images/centos-disk-final.png?raw=true)
-
 After creating the disk, when you run 'fdisk -l' you should be able to see the disks that are available to you.
 
 ```
