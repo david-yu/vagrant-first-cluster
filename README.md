@@ -20,11 +20,6 @@ https://www.virtualbox.org/wiki/Downloads
 vagrant init centos/7
 ```
 
-## Install Vagrant Plugins
-```
-vagrant plugin install vagrant-persistent-storage
-```
-
 ## Create files in project to store environment variables with custom values for use by Vagrant
 ```
 ee_url
@@ -33,14 +28,14 @@ ee_url
 ## Bring up nodes
 
 ```
-vagrant up centos-node
+vagrant up centos-ucp-node1 centos-ucp-node2 centos-ucp-node3 centos-ucp-node4 centos-ucp-node5
 ```
 
 ## Configure Device Mapper
 
 After provisioning the node and installing Docker EE Engine it is highly recommended to configure DeviceMapper to use direct-lvm mode in production. You can read more about selecting Graph Drivers here: https://success.docker.com/KBase/An_Introduction_to_Storage_Solutions_for_Docker_CaaS#Selecting_Graph_Drivers
 
-### Create a Disk for VM in VirtualBox
+### Create a Disk for VM via Vagrant
 
 The best practice for configuring DeviceMapper with Docker is to provide a spare block device to create a logical volume as a thinpool for the graph driver storage. The Vagrantfile included below will create a second storage device in /dev/sdb with 20GB of space. You can verify this when you run 'fdisk -l' you should be able to see the disks that are available to you.
 
@@ -140,11 +135,11 @@ Cgroup Driver: cgroupfs
 ## Stop nodes
 
 ```
-vagrant halt centos-node
+vagrant halt centos-ucp-node1 centos-ucp-node2 centos-ucp-node3 centos-ucp-node4 centos-ucp-node5
 ```
 
 ## Destroy nodes
 
 ```
-vagrant destroy centos-node
+vagrant destroy centos-ucp-node1 centos-ucp-node2 centos-ucp-node3 centos-ucp-node4 centos-ucp-node5
 ```
