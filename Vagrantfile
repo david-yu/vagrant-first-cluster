@@ -15,26 +15,24 @@ Vagrant.configure(2) do |config|
 
     # Docker EE node for CentOS 7.3
     config.vm.define "centos-ucp-node1" do |centos_ucp_node1|
+      disk = './vagrant-disk.vdi'
       centos_ucp_node1.vm.box = "centos/7"
       centos_ucp_node1.vm.network "private_network", type: "dhcp"
       centos_ucp_node1.vm.hostname = "centos-ucp-node1"
       config.vm.provider :virtualbox do |vb|
-         vb.customize ["modifyvm", :id, "--memory", "2048"]
-         vb.customize ["modifyvm", :id, "--cpus", "2"]
-         vb.name = "centos-ucp-node1"
+        unless File.exist?(disk)
+          vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
+        end
+        vb.customize ['storageattach', :id,  '--storagectl', 'IDE', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
+        vb.customize ["modifyvm", :id, "--memory", "2048"]
+        vb.customize ["modifyvm", :id, "--cpus", "2"]
+        vb.name = "centos-ucp-node1"
       end
-      # configure a persistent storage for mysql data
-      config.persistent_storage.enabled = true
-      config.persistent_storage.location = "virtualdrive.vdi"
-      config.persistent_storage.size = 5000
-      config.persistent_storage.mountname = 'sdb'
-      config.persistent_storage.mountpoint = '/dev/sdb'
-      config.persistent_storage.volgroupname = 'docker'
       centos_ucp_node1.vm.provision "shell", inline: <<-SHELL
-       sudo yum -y remove docker
-       sudo yum -y remove docker-selinux
-       sudo yum -y install ntpdate
-       sudo ntpdate -s time.nist.gov
+        sudo yum -y remove docker
+        sudo yum -y remove docker-selinux
+        sudo yum -y install ntpdate
+        sudo ntpdate -s time.nist.gov
      SHELL
     end
 
@@ -44,9 +42,10 @@ Vagrant.configure(2) do |config|
       centos_ucp_node2.vm.network "private_network", type: "dhcp"
       centos_ucp_node2.vm.hostname = "centos-ucp-node2"
       config.vm.provider :virtualbox do |vb|
-         vb.customize ["modifyvm", :id, "--memory", "2048"]
-         vb.customize ["modifyvm", :id, "--cpus", "2"]
-         vb.name = "centos-ucp-node2"
+        vb.customize ['storageattach', :id,  '--storagectl', 'IDE', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
+        vb.customize ["modifyvm", :id, "--memory", "2048"]
+        vb.customize ["modifyvm", :id, "--cpus", "2"]
+        vb.name = "centos-ucp-node2"
       end
       centos_ucp_node2.vm.provision "shell", inline: <<-SHELL
         sudo yum -y remove docker
