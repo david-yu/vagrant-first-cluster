@@ -42,19 +42,11 @@ After provisioning the node and installing Docker EE Engine it is highly recomme
 
 ### Create a Disk for VM in VirtualBox
 
-The best practice for configuring DeviceMapper with Docker is to provide a spare block device to create a logical volume as a thinpool for the graph driver storage. In Virtual Box you may manually create a new disk and attach it to the VM as shown in the images below:
-
-After creating the disk, when you run 'fdisk -l' you should be able to see the disks that are available to you.
+The best practice for configuring DeviceMapper with Docker is to provide a spare block device to create a logical volume as a thinpool for the graph driver storage. The Vagrantfile included below will create a second storage device in /dev/sdb with 20GB of space. You can verify this when you run 'fdisk -l' you should be able to see the disks that are available to you.
 
 ```
 [vagrant@centos-node ~]$ sudo su -
 [root@centos-node ~]# fdisk -l
-
-Disk /dev/sdb: 8589 MB, 8589934592 bytes, 16777216 sectors
-Units = sectors of 1 * 512 = 512 bytes
-Sector size (logical/physical): 512 bytes / 512 bytes
-I/O size (minimum/optimal): 512 bytes / 512 bytes
-
 
 Disk /dev/sda: 42.9 GB, 42949672960 bytes, 83886080 sectors
 Units = sectors of 1 * 512 = 512 bytes
@@ -63,10 +55,16 @@ I/O size (minimum/optimal): 512 bytes / 512 bytes
 Disk label type: dos
 Disk identifier: 0x000dc137
 
-   Device Boot      Start         End      Blocks   Id  System
+  Device Boot      Start         End      Blocks   Id  System
 /dev/sda1            2048        4095        1024   83  Linux
 /dev/sda2   *        4096     2101247     1048576   83  Linux
 /dev/sda3         2101248    83886079    40892416   8e  Linux LVM
+
+Disk /dev/sdb: 21.5 GB, 21474836480 bytes, 41943040 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
 
 Disk /dev/mapper/VolGroup00-LogVol00: 40.2 GB, 40231763968 bytes, 78577664 sectors
 Units = sectors of 1 * 512 = 512 bytes
