@@ -32,9 +32,6 @@ Vagrant.configure(2) do |config|
        sudo apt-get update
        sudo apt-get install -y haproxy
        ifconfig enp0s8 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}' > /vagrant/haproxy-node
-       export DTR_NODE1_IPADDR=172.28.128.23
-       export DTR_NODE2_IPADDR=172.28.128.24
-       export DTR_NODE3_IPADDR=172.28.128.25
        sudo sed -i '/module(load="imudp")/s/^#//g' /etc/rsyslog.conf
        sudo sed -i '/input(type="imudp" port="514")/s/^#//g' /etc/rsyslog.conf
        sudo service rsyslog restart
