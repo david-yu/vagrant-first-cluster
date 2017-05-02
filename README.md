@@ -35,9 +35,9 @@ vagrant up centos-ucp-node1 centos-ucp-node2 centos-ucp-node3 centos-ucp-node4 c
 
 After provisioning the node and installing Docker EE Engine it is highly recommended to configure DeviceMapper to use direct-lvm mode in production. You can read more about selecting Graph Drivers here: https://success.docker.com/KBase/An_Introduction_to_Storage_Solutions_for_Docker_CaaS#Selecting_Graph_Drivers
 
-### Create a Disk for VM via Vagrant
+### Second Storage Device provisioned by Vagrant
 
-The best practice for configuring DeviceMapper with Docker is to provide a spare block device to create a logical volume as a thinpool for the graph driver storage. The Vagrantfile included below will create a second storage device in /dev/sdb with 20GB of space. You can verify this when you run 'fdisk -l' you should be able to see the disks that are available to you.
+The best practice for configuring DeviceMapper with Docker is to provide a spare block device to create a logical volume as a thinpool for the graph driver storage. The Vagrantfile included below will create a second storage device in `/dev/sdb` with 20GB of space. You can verify this when you run `fdisk -l` you should be able to see the disks that are available to you.
 
 ```
 [vagrant@centos-node ~]$ sudo su -
@@ -72,9 +72,6 @@ Units = sectors of 1 * 512 = 512 bytes
 Sector size (logical/physical): 512 bytes / 512 bytes
 I/O size (minimum/optimal): 512 bytes / 512 bytes
 ```
-
-The disk will be located on `/dev/sdb` if you created and attached just a second disk, or `/dev/sdc` if you created and attached a third disk. Use this as your device (instead of `/dev/xvdf`) when running through the Device Mapper config below.
-
 ### Configure Device Mapper
 
 Configure Docker to use DeviceMapper as the graph storage driver: [Configure Docker With DeviceMapper](https://docs.docker.com/engine/userguide/storagedriver/device-mapper-driver/#/configure-docker-with-devicemapper)
