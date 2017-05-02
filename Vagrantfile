@@ -25,14 +25,13 @@ Vagrant.configure(2) do |config|
       end
       haproxy_node.vm.provision "shell", inline: <<-SHELL
        sudo apt-get update
-       sudo apt-get install -y apt-transport-https ca-certificates ntpdate bind9 bind9utils bind9-doc
+       sudo apt-get install -y apt-transport-https ca-certificates ntpdate
        sudo ntpdate -s time.nist.gov
        sudo apt-get install -y software-properties-common
        sudo add-apt-repository ppa:vbernat/haproxy-1.7
        sudo apt-get update
        sudo apt-get install -y haproxy
        ifconfig enp0s8 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}' > /vagrant/haproxy-node
-       export UCP_IPADDR=$(cat /vagrant/ucp-nfs-node1)
        export DTR_NODE1_IPADDR=172.28.128.23
        export DTR_NODE2_IPADDR=172.28.128.24
        export DTR_NODE3_IPADDR=172.28.128.25
@@ -41,15 +40,6 @@ Vagrant.configure(2) do |config|
        sudo service rsyslog restart
        sudo cp /vagrant/files/haproxy.cfg /etc/haproxy/haproxy.cfg
        sudo service haproxy restart
-       sudo cp /vagrant/files/bind9 /etc/default/bind9
-       sudo systemctl daemon-reload
-       sudo systemctl restart bind9
-       sudo mkdir /etc/bind/zones
-       sudo cp /vagrant/files/db.ddc /etc/bind/zones/db.ddc
-       sudo cp /vagrant/files/named.conf.local /etc/bind/named.conf.local
-       sudo cp /vagrant/files/named.conf.options /etc/bind/named.conf.options
-       sudo named-checkconf
-       sudo systemctl restart bind9
       SHELL
     end
 
