@@ -29,6 +29,8 @@ Vagrant.configure(2) do |config|
         sudo yum -y install ntpdate
         sudo yum -y install haproxy
         sudo ntpdate -s time.nist.gov
+        sudo cp /vagrant/files/haproxy.cfg /etc/haproxy/haproxy.cfg
+        sudo systemctl start haproxy
      SHELL
     end
 
