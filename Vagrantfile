@@ -19,7 +19,7 @@ Vagrant.configure(2) do |config|
       centos_haproxy_node.vm.network "private_network", ip: "172.28.128.30"
       centos_haproxy_node.vm.hostname = "centos-haproxy-node"
       config.vm.provider :virtualbox do |vb|
-        vb.customize ["modifyvm", :id, "--memory", "2048"]
+        vb.customize ["modifyvm", :id, "--memory", "1024"]
         vb.customize ["modifyvm", :id, "--cpus", "2"]
         vb.name = "centos-haproxy-node"
       end
