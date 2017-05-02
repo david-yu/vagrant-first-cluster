@@ -42,10 +42,10 @@ Vagrant.configure(2) do |config|
       centos_ucp_node2.vm.box = "centos/7"
       centos_ucp_node2.vm.network "private_network", type: "dhcp"
       centos_ucp_node2.vm.hostname = "centos-ucp-node2"
-      unless File.exist?(disk)
-        vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
-      end
       config.vm.provider :virtualbox do |vb|
+        unless File.exist?(disk)
+          vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
+        end
         vb.customize ['storageattach', :id,  '--storagectl', 'IDE', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
         vb.customize ["modifyvm", :id, "--memory", "2048"]
         vb.customize ["modifyvm", :id, "--cpus", "2"]
@@ -65,10 +65,10 @@ Vagrant.configure(2) do |config|
       centos_ucp_node3.vm.box = "centos/7"
       centos_ucp_node3.vm.network "private_network", type: "dhcp"
       centos_ucp_node3.vm.hostname = "centos-ucp-node3"
-      unless File.exist?(disk)
-        vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
-      end
       config.vm.provider :virtualbox do |vb|
+        unless File.exist?(disk)
+          vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
+        end
         vb.customize ['storageattach', :id,  '--storagectl', 'IDE', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
         vb.customize ["modifyvm", :id, "--memory", "2048"]
         vb.customize ["modifyvm", :id, "--cpus", "2"]
@@ -87,10 +87,10 @@ Vagrant.configure(2) do |config|
       centos_dtr_node1.vm.box = "centos/7"
       centos_dtr_node1.vm.network "private_network", type: "dhcp"
       centos_dtr_node1.vm.hostname = "centos-dtr-node1"
-      unless File.exist?(disk)
-        vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
-      end
       config.vm.provider :virtualbox do |vb|
+        unless File.exist?(disk)
+          vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
+        end
         vb.customize ['storageattach', :id,  '--storagectl', 'IDE', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
         vb.customize ["modifyvm", :id, "--memory", "2048"]
         vb.customize ["modifyvm", :id, "--cpus", "2"]
@@ -109,10 +109,10 @@ Vagrant.configure(2) do |config|
       centos_worker_node1.vm.box = "centos/7"
       centos_worker_node1.vm.network "private_network", type: "dhcp"
       centos_worker_node1.vm.hostname = "centos-worker-node1"
-      unless File.exist?(disk)
-        vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
-      end
       config.vm.provider :virtualbox do |vb|
+        unless File.exist?(disk)
+          vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
+        end
         vb.customize ['storageattach', :id,  '--storagectl', 'IDE', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
         vb.customize ["modifyvm", :id, "--memory", "2048"]
         vb.customize ["modifyvm", :id, "--cpus", "2"]
