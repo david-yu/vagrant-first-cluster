@@ -14,24 +14,43 @@ Vagrant.configure(2) do |config|
   # boxes at https://atlas.hashicorp.com/search.
 
     # Docker EE node for CentOS 7.3
-    config.vm.define "centos-haproxy-node" do |centos_haproxy_node|
-      centos_haproxy_node.vm.box = "centos/7"
-      centos_haproxy_node.vm.network "private_network", ip: "172.28.128.30"
-      centos_haproxy_node.vm.hostname = "centos-haproxy-node"
+    config.vm.define "haproxy-node" do |haproxy_node|
+      haproxy_node.vm.box = "ubuntu/xenial64"
+      haproxy_node.vm.network "private_network", ip: "172.28.128.30"
+      haproxy_node.vm.hostname = "haproxy-node"
       config.vm.provider :virtualbox do |vb|
-        vb.customize ["modifyvm", :id, "--memory", "1024"]
-        vb.customize ["modifyvm", :id, "--cpus", "2"]
-        vb.name = "centos-haproxy-node"
+         vb.customize ["modifyvm", :id, "--memory", "1024"]
+         vb.customize ["modifyvm", :id, "--cpus", "1"]
+         vb.name = "haproxy-node"
       end
-      centos_haproxy_node.vm.provision "shell", inline: <<-SHELL
-        sudo yum -y remove docker
-        sudo yum -y remove docker-selinux
-        sudo yum -y install ntpdate
-        sudo yum -y install haproxy
-        sudo ntpdate -s time.nist.gov
-        sudo cp /vagrant/files/haproxy.cfg /etc/haproxy/haproxy.cfg
-        sudo systemctl start haproxy
-     SHELL
+      haproxy_node.vm.provision "shell", inline: <<-SHELL
+       sudo apt-get update
+       sudo apt-get install -y apt-transport-https ca-certificates ntpdate bind9 bind9utils bind9-doc
+       sudo ntpdate -s time.nist.gov
+       sudo apt-get install -y software-properties-common
+       sudo add-apt-repository ppa:vbernat/haproxy-1.7
+       sudo apt-get update
+       sudo apt-get install -y haproxy
+       ifconfig enp0s8 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}' > /vagrant/haproxy-node
+       export UCP_IPADDR=$(cat /vagrant/ucp-nfs-node1)
+       export DTR_NODE1_IPADDR=172.28.128.23
+       export DTR_NODE2_IPADDR=172.28.128.24
+       export DTR_NODE3_IPADDR=172.28.128.25
+       sudo sed -i '/module(load="imudp")/s/^#//g' /etc/rsyslog.conf
+       sudo sed -i '/input(type="imudp" port="514")/s/^#//g' /etc/rsyslog.conf
+       sudo service rsyslog restart
+       sudo cp /vagrant/files/haproxy.cfg /etc/haproxy/haproxy.cfg
+       sudo service haproxy restart
+       sudo cp /vagrant/files/bind9 /etc/default/bind9
+       sudo systemctl daemon-reload
+       sudo systemctl restart bind9
+       sudo mkdir /etc/bind/zones
+       sudo cp /vagrant/files/db.ddc /etc/bind/zones/db.ddc
+       sudo cp /vagrant/files/named.conf.local /etc/bind/named.conf.local
+       sudo cp /vagrant/files/named.conf.options /etc/bind/named.conf.options
+       sudo named-checkconf
+       sudo systemctl restart bind9
+      SHELL
     end
 
 

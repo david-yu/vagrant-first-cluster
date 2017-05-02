@@ -1,3 +1,4 @@
 .vagrant
 *.vdi
+*.log
 ee_url
