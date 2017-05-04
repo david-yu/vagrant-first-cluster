@@ -154,6 +154,7 @@ sudo yum -y install docker-ee
 sudo systemctl start docker
 
 # Configure DeviceMapper
+systemctl stop docker
 sudo yum install -y lvm2
 sudo pvcreate /dev/sdb
 sudo vgcreate docker /dev/sdb
@@ -167,15 +168,15 @@ sudo sh -c "echo 'activation {
 sudo lvchange --metadataprofile docker-thinpool docker/thinpool
 sudo lvs -o+seg_monitor
 sudo mkdir /var/lib/docker.bk
-sudo mv /var/lib/docker/* /var/lib/docker.bk
+sudo sh -c "mv /var/lib/docker/* /var/lib/docker.bk"
 sudo sh -c "echo '{
-  "storage-driver": "devicemapper",
-   "storage-opts": [
-     "dm.thinpooldev=/dev/mapper/docker-thinpool",
-     "dm.use_deferred_removal=true",
-     "dm.use_deferred_deletion=true"
+  \"storage-driver\": \"devicemapper\",
+  \"storage-opts\": [
+     \"dm.thinpooldev=/dev/mapper/docker-thinpool\",
+     \"dm.use_deferred_removal=true\",
+     \"dm.use_deferred_deletion=true\"
    ]
 }' >> /etc/docker/daemon.json"
-systemctl daemon-reload
-systemctl start docker
+sudo systemctl daemon-reload
+sudo systemctl start docker
 ```
