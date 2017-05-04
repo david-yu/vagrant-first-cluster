@@ -20,6 +20,11 @@ https://www.virtualbox.org/wiki/Downloads
 vagrant init centos/7
 ```
 
+## Make disk directories to store vdi files that are created for VMs in the cluster
+```
+mkdir ../vagrant-disks
+```
+
 ## Create files in project to store environment variables with custom values for use by Vagrant
 ```
 ee_url
@@ -141,7 +146,7 @@ vagrant halt centos-ucp-node1 centos-ucp-node2 centos-ucp-node3 centos-ucp-node4
 vagrant destroy centos-ucp-node1 centos-ucp-node2 centos-ucp-node3 centos-ucp-node4 centos-ucp-node5
 ```
 
-## Docker EE Install
+## Manual Docker EE Install
 ```
 # Install Docker EE
 sudo yum remove docker docker-common container-selinux docker-selinux docker-engine
