@@ -140,3 +140,26 @@ vagrant halt centos-ucp-node1 centos-ucp-node2 centos-ucp-node3 centos-ucp-node4
 ```
 vagrant destroy centos-ucp-node1 centos-ucp-node2 centos-ucp-node3 centos-ucp-node4 centos-ucp-node5
 ```
+
+## Docker EE Install
+```
+# Install Docker EE
+sudo yum remove docker docker-common container-selinux docker-selinux docker-engine
+sudo yum install -y yum-utils
+export DOCKER_EE_URL=$(cat /vagrant/ee_url)
+sudo sh -c 'echo ${DOCKER_EE_URL}> /etc/yum/vars/dockerurl'
+sudo yum-config-manager --add-repo ${DOCKER_EE_URL}/docker-ee.repo
+sudo yum makecache fast
+sudo yum install docker-ee
+sudo systemctl start docker
+
+# Configure DeviceMapper
+sudo yum install -y lvm2
+sudo pvcreate /dev/sdb
+sudo vgcreate docker /dev/sdb
+sudo lvcreate --wipesignatures y -n thinpool docker -l 95%VG
+sudo lvcreate --wipesignatures y -n thinpoolmeta docker -l 1%VG
+sudo lvconvert -y --zero n -c 512K --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta
+sudo lvchange --metadataprofile docker-thinpool docker/thinpool
+sudo lvs -o+seg_monitor
+```
