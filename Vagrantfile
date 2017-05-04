@@ -59,8 +59,10 @@ Vagrant.configure(2) do |config|
       centos_ucp_node1.vm.provision "shell", inline: <<-SHELL
         sudo yum -y remove docker
         sudo yum -y remove docker-selinux
-        sudo yum -y install ntpdate
+        sudo yum -y install ntpdate net-tools
         sudo ntpdate -s time.nist.gov
+        sudo cp /vagrant/scripts/install_ee.sh .
+        sudo chmod +x install_ee.sh
      SHELL
     end
 
@@ -82,7 +84,7 @@ Vagrant.configure(2) do |config|
       centos_ucp_node2.vm.provision "shell", inline: <<-SHELL
         sudo yum -y remove docker
         sudo yum -y remove docker-selinux
-        sudo yum -y install ntpdate
+        sudo yum -y install ntpdate net-tools
         sudo ntpdate -s time.nist.gov
         sudo cp /vagrant/scripts/install_ee.sh .
         sudo chmod +x install_ee.sh
@@ -108,6 +110,7 @@ Vagrant.configure(2) do |config|
       centos_ucp_node3.vm.provision "shell", inline: <<-SHELL
        sudo yum -y remove docker
        sudo yum -y remove docker-selinux
+       sudo yum -y install ntpdate net-tools
        sudo ntpdate -s time.nist.gov
        sudo cp /vagrant/scripts/install_ee.sh .
        sudo chmod +x install_ee.sh
@@ -133,6 +136,7 @@ Vagrant.configure(2) do |config|
       centos_dtr_node1.vm.provision "shell", inline: <<-SHELL
        sudo yum -y remove docker
        sudo yum -y remove docker-selinux
+       sudo yum -y install ntpdate net-tools
        sudo ntpdate -s time.nist.gov
        sudo cp /vagrant/scripts/install_ee.sh .
        sudo chmod +x install_ee.sh
@@ -158,6 +162,7 @@ Vagrant.configure(2) do |config|
       centos_worker_node1.vm.provision "shell", inline: <<-SHELL
        sudo yum -y remove docker
        sudo yum -y remove docker-selinux
+       sudo yum -y install ntpdate net-tools
        sudo ntpdate -s time.nist.gov
        sudo cp /vagrant/scripts/install_ee.sh .
        sudo chmod +x install_ee.sh
