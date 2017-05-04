@@ -34,3 +34,4 @@ sudo sh -c "echo '{
 }' >> /etc/docker/daemon.json"
 sudo systemctl daemon-reload
 sudo systemctl start docker
+sudo usermod -aG docker vagrant

@@ -92,7 +92,7 @@ Containers: 0
  Paused: 0
  Stopped: 0
 Images: 0
-Server Version: 1.13.1-cs2
+Server Version: 17.03.1-ee-3
 Storage Driver: overlay
  Backing Filesystem: xfs
  Supports d_type: true
@@ -104,12 +104,13 @@ After properly configuring Docker with Device Mapper:
 
 ```
 [vagrant@centos-node ~]$ docker info
+[vagrant@centos-ucp-node2 ~]$ sudo docker info
 Containers: 0
  Running: 0
  Paused: 0
  Stopped: 0
 Images: 0
-Server Version: 1.13.1-cs2
+Server Version: 17.03.1-ee-3
 Storage Driver: devicemapper
  Pool Name: docker-thinpool
  Pool Blocksize: 524.3 kB
@@ -118,19 +119,44 @@ Storage Driver: devicemapper
  Data file:
  Metadata file:
  Data Space Used: 19.92 MB
- Data Space Total: 3.997 GB
- Data Space Available: 3.977 GB
- Metadata Space Used: 40.96 kB
- Metadata Space Total: 41.94 MB
- Metadata Space Available: 41.9 MB
- Thin Pool Minimum Free Space: 399.5 MB
+ Data Space Total: 20.4 GB
+ Data Space Available: 20.38 GB
+ Metadata Space Used: 61.44 kB
+ Metadata Space Total: 213.9 MB
+ Metadata Space Available: 213.8 MB
+ Thin Pool Minimum Free Space: 2.039 GB
  Udev Sync Supported: true
  Deferred Removal Enabled: true
  Deferred Deletion Enabled: true
  Deferred Deleted Device Count: 0
- Library Version: 1.02.135-RHEL7 (2016-09-28)
+ Library Version: 1.02.135-RHEL7 (2016-11-16)
 Logging Driver: json-file
 Cgroup Driver: cgroupfs
+Plugins:
+ Volume: local
+ Network: bridge host macvlan null overlay
+Swarm: inactive
+Runtimes: runc
+Default Runtime: runc
+Init Binary: docker-init
+containerd version: 4ab9917febca54791c5f071a9d1f404867857fcc
+runc version: 54296cf40ad8143b62dbcaa1d90e520a2136ddfe
+init version: 949e6fa
+Security Options:
+ seccomp
+  Profile: default
+Kernel Version: 3.10.0-514.2.2.el7.x86_64
+Operating System: CentOS Linux 7 (Core)
+OSType: linux
+Architecture: x86_64
+CPUs: 2
+Total Memory: 1.796 GiB
+Name: centos-ucp-node2
+ID: NC6P:NAW7:SKY2:HSXJ:HK3L:A3XZ:BGBY:D6KG:Z6YE:CECS:OU3R:265C
+Docker Root Dir: /var/lib/docker
+Debug Mode (client): false
+Debug Mode (server): false
+Registry: https://index.docker.io/v1/
 ...
 ```
 
