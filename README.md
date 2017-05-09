@@ -17,12 +17,12 @@ https://www.virtualbox.org/wiki/Downloads
 
 ## Download CentOS 7 box
 ```
-vagrant init centos/7
+$ vagrant init centos/7
 ```
 
 ## Make disk directories to store vdi files that are created for VMs in the cluster
 ```
-mkdir ../vagrant-disks
+$ mkdir ../vagrant-disks
 ```
 
 ## Create files in project to store environment variables with custom values for use by Vagrant
@@ -30,10 +30,15 @@ mkdir ../vagrant-disks
 ee_url
 ```
 
+## Install [vagrant-landrush](https://github.com/vagrant-landrush/landrush) plugin
+```
+$ vagrant plugin install landrush
+```
+
 ## Bring up nodes
 
 ```
-vagrant up centos-ucp-node1 centos-ucp-node2 centos-ucp-node3 centos-ucp-node4 centos-ucp-node5
+$ vagrant up centos-ucp-node1 centos-ucp-node2 centos-ucp-node3 centos-ucp-node4 centos-ucp-node5
 ```
 
 ## Configure Device Mapper
@@ -163,51 +168,11 @@ Registry: https://index.docker.io/v1/
 ## Stop nodes
 
 ```
-vagrant halt centos-ucp-node1 centos-ucp-node2 centos-ucp-node3 centos-ucp-node4 centos-ucp-node5
+$ vagrant halt centos-ucp-node1 centos-ucp-node2 centos-ucp-node3 centos-ucp-node4 centos-ucp-node5
 ```
 
 ## Destroy nodes
 
 ```
-vagrant destroy centos-ucp-node1 centos-ucp-node2 centos-ucp-node3 centos-ucp-node4 centos-ucp-node5
-```
-
-## Manual Docker EE Install
-```
-# Install Docker EE
-sudo yum remove docker docker-common container-selinux docker-selinux docker-engine
-sudo yum install -y yum-utils
-export DOCKER_EE_URL=$(cat /vagrant/ee_url)
-sudo sh -c "echo ${DOCKER_EE_URL}> /etc/yum/vars/dockerurl"
-sudo yum-config-manager --add-repo ${DOCKER_EE_URL}/docker-ee.repo
-sudo yum makecache fast
-sudo yum -y install docker-ee
-sudo systemctl start docker
-
-# Configure DeviceMapper
-systemctl stop docker
-sudo yum install -y lvm2
-sudo pvcreate /dev/sdb
-sudo vgcreate docker /dev/sdb
-sudo lvcreate --wipesignatures y -n thinpool docker -l 95%VG
-sudo lvcreate --wipesignatures y -n thinpoolmeta docker -l 1%VG
-sudo lvconvert -y --zero n -c 512K --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta
-sudo sh -c "echo 'activation {
-  thin_pool_autoextend_threshold=80
-  thin_pool_autoextend_percent=20
-}' >> /etc/lvm/profile/docker-thinpool.profile"
-sudo lvchange --metadataprofile docker-thinpool docker/thinpool
-sudo lvs -o+seg_monitor
-sudo mkdir /var/lib/docker.bk
-sudo sh -c "mv /var/lib/docker/* /var/lib/docker.bk"
-sudo sh -c "echo '{
-  \"storage-driver\": \"devicemapper\",
-  \"storage-opts\": [
-     \"dm.thinpooldev=/dev/mapper/docker-thinpool\",
-     \"dm.use_deferred_removal=true\",
-     \"dm.use_deferred_deletion=true\"
-   ]
-}' >> /etc/docker/daemon.json"
-sudo systemctl daemon-reload
-sudo systemctl start docker
+$ vagrant destroy centos-ucp-node1 centos-ucp-node2 centos-ucp-node3 centos-ucp-node4 centos-ucp-node5
 ```
