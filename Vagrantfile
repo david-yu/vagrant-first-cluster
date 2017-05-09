@@ -23,6 +23,9 @@ Vagrant.configure(2) do |config|
          vb.customize ["modifyvm", :id, "--cpus", "1"]
          vb.name = "haproxy-node"
       end
+      haproxy_node.landrush.enabled = true
+      haproxy_node.landrush.host 'dtr.local', '172.28.128.30'
+      haproxy_node.landrush.host 'ucp.local', '172.28.128.30'
       haproxy_node.vm.provision "shell", inline: <<-SHELL
        sudo apt-get update
        sudo apt-get install -y apt-transport-https ca-certificates ntpdate
