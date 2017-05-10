@@ -39,6 +39,10 @@ $ vagrant plugin install landrush
 
 ```
 $ vagrant up centos-ucp-node1 centos-ucp-node2 centos-ucp-node3 centos-ucp-node4 centos-ucp-node5
+$ vagrant landrush set ucp.local haproxy.local
+$ vagrant landrush set dtr.local haproxy.local
+# Flush Mac's DNS cache
+$ sudo killall -HUP mDNSResponder
 ```
 
 ## Configure Device Mapper

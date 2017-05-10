@@ -14,16 +14,18 @@ Vagrant.configure(2) do |config|
   # boxes at https://atlas.hashicorp.com/search.
 
     # Docker EE node for CentOS 7.3
-    config.vm.define "haproxy-node" do |haproxy_node|
+    config.vm.define "haproxy" do |haproxy_node|
       haproxy_node.vm.box = "ubuntu/xenial64"
       haproxy_node.vm.network "private_network", ip: "172.28.128.30"
-      haproxy_node.vm.hostname = "haproxy-node"
+      haproxy_node.vm.hostname = "haproxy.local"
+      haproxy_node.hostsupdater.aliases = ["ucp.local", "dtr.local"]
       config.vm.provider :virtualbox do |vb|
          vb.customize ["modifyvm", :id, "--memory", "1024"]
          vb.customize ["modifyvm", :id, "--cpus", "1"]
          vb.name = "haproxy-node"
       end
       haproxy_node.landrush.enabled = true
+      haproxy_node.landrush.tld = 'local'
       haproxy_node.landrush.host 'dtr.local', '172.28.128.30'
       haproxy_node.landrush.host 'ucp.local', '172.28.128.30'
       haproxy_node.vm.provision "shell", inline: <<-SHELL
@@ -50,6 +52,7 @@ Vagrant.configure(2) do |config|
       centos_ucp_node1.vm.box = "centos/7"
       centos_ucp_node1.vm.network "private_network", ip: "172.28.128.31"
       centos_ucp_node1.vm.hostname = "centos-ucp-node1"
+      centos_ucp_node1.landrush.enabled = true
       config.vm.provider :virtualbox do |vb|
         unless File.exist?(disk)
           vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
