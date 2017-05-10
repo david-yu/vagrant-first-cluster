@@ -59,7 +59,7 @@ Vagrant.configure(2) do |config|
           vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
         end
         vb.customize ['storageattach', :id,  '--storagectl', 'IDE', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
-        vb.customize ["modifyvm", :id, "--memory", "2048"]
+        vb.customize ["modifyvm", :id, "--memory", "2500"]
         vb.customize ["modifyvm", :id, "--cpus", "2"]
         vb.name = "centos-ucp-node1"
       end
@@ -70,7 +70,7 @@ Vagrant.configure(2) do |config|
         sudo ntpdate -s time.nist.gov
         sudo cp /vagrant/scripts/install_ee.sh .
         sudo chmod +x install_ee.sh
-        ./install_ee.sh
+        # ./install_ee.sh
      SHELL
     end
 
@@ -87,7 +87,7 @@ Vagrant.configure(2) do |config|
           vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
         end
         vb.customize ['storageattach', :id,  '--storagectl', 'IDE', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
-        vb.customize ["modifyvm", :id, "--memory", "2048"]
+        vb.customize ["modifyvm", :id, "--memory", "2500"]
         vb.customize ["modifyvm", :id, "--cpus", "2"]
         vb.name = "centos-ucp-node2"
       end
