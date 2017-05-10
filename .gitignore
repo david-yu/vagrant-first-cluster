@@ -2,4 +2,8 @@
 *.vdi
 *.log
 ee_url
+hub_username
+hub_password
+ucp_password
 haproxy-node
+*.lic
