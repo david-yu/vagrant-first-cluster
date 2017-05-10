@@ -51,7 +51,7 @@ Vagrant.configure(2) do |config|
       disk = '../vagrant-disks/vagrant-disk.vdi'
       centos_ucp_node1.vm.box = "centos/7"
       centos_ucp_node1.vm.network "private_network", ip: "172.28.128.31"
-      centos_ucp_node1.vm.hostname = "centos-ucp-node1"
+      centos_ucp_node1.vm.hostname = "ucp-node1.local"
       centos_ucp_node1.landrush.enabled = true
       config.vm.provider :virtualbox do |vb|
         unless File.exist?(disk)
@@ -77,7 +77,8 @@ Vagrant.configure(2) do |config|
       disk = '../vagrant-disks/vagrant-disk2.vdi'
       centos_ucp_node2.vm.box = "centos/7"
       centos_ucp_node2.vm.network "private_network", ip: "172.28.128.32"
-      centos_ucp_node2.vm.hostname = "centos-ucp-node2"
+      centos_ucp_node2.vm.hostname = "ucp-node2.local"
+      centos_ucp_node2.landrush.enabled = true
       config.vm.provider :virtualbox do |vb|
         unless File.exist?(disk)
           vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
@@ -103,7 +104,8 @@ Vagrant.configure(2) do |config|
       disk = '../vagrant-disks/vagrant-disk3.vdi'
       centos_ucp_node3.vm.box = "centos/7"
       centos_ucp_node3.vm.network "private_network", ip: "172.28.128.33"
-      centos_ucp_node3.vm.hostname = "centos-ucp-node3"
+      centos_ucp_node3.vm.hostname = "ucp-node3.local"
+      centos_ucp_node3.landrush.enabled = true
       config.vm.provider :virtualbox do |vb|
         unless File.exist?(disk)
           vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
@@ -129,7 +131,8 @@ Vagrant.configure(2) do |config|
       disk = '../vagrant-disks/vagrant-disk4.vdi'
       centos_dtr_node1.vm.box = "centos/7"
       centos_dtr_node1.vm.network "private_network", ip: "172.28.128.34"
-      centos_dtr_node1.vm.hostname = "centos-dtr-node1"
+      centos_dtr_node1.vm.hostname = "dtr-node1.local"
+      centos_dtr_node1.landrush.enabled = true
       config.vm.provider :virtualbox do |vb|
         unless File.exist?(disk)
           vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
@@ -155,7 +158,8 @@ Vagrant.configure(2) do |config|
       disk = '../vagrant-disks/vagrant-disk5.vdi'
       centos_worker_node1.vm.box = "centos/7"
       centos_worker_node1.vm.network "private_network", ip: "172.28.128.35"
-      centos_worker_node1.vm.hostname = "centos-worker-node1"
+      centos_worker_node1.vm.hostname = "worker-node1.local"
+      centos_worker_node1.landrush.enabled = true
       config.vm.provider :virtualbox do |vb|
         unless File.exist?(disk)
           vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
