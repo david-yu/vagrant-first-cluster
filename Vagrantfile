@@ -69,6 +69,7 @@ Vagrant.configure(2) do |config|
         sudo ntpdate -s time.nist.gov
         sudo cp /vagrant/scripts/install_ee.sh .
         sudo chmod +x install_ee.sh
+        ./install_ee.sh
      SHELL
     end
 
