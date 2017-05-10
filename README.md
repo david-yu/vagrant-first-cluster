@@ -32,7 +32,10 @@ ee_url
 
 ## Install [vagrant-landrush](https://github.com/vagrant-landrush/landrush) plugin
 ```
+
 $ vagrant plugin install landrush
+$ vagrant plugin install vagrant-hostsupdater
+$ vagrant plugin install vagrant-multiprovider-snap
 ```
 
 ## Bring up nodes
