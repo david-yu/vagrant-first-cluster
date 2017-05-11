@@ -7,3 +7,4 @@ hub_password
 ucp_password
 haproxy-node
 *.lic
+*.pem
