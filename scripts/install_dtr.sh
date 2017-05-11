@@ -3,11 +3,9 @@
 export UCP_IPADDR=172.28.128.31
 export DTR_IPADDR=172.28.128.34
 export UCP_PASSWORD=$(cat /vagrant/ucp_password)
-export SWARM_JOIN_TOKEN_WORKER=$(cat /vagrant/swarm-join-token-worker)
 export DTR_REPLICA_ID=$(cat /vagrant/dtr-replica-id)
-docker swarm join --token ${SWARM_JOIN_TOKEN_WORKER} ${UCP_IPADDR}:2377
-# Wait for Join to complete
-sleep 30
+docker swarm join --token SWMTKN-1-1xkrglei9xno157rs13z04q81jp10qvf8xh9lobb8b8c6jxry6-6pbomvl4pq13m6gh6j4kr8m0n 172.28.128.31:2377
+
 # Install DTR
 curl -k https://ucp.local/ca > ucp-ca.pem
 docker run --rm docker/dtr:2.2.4 install --ucp-url https://${UCP_IPADDR} --ucp-node dtr-node1.local --replica-id ${DTR_REPLICA_ID} --dtr-external-url https://dtr.local --ucp-username admin --ucp-password ${UCP_PASSWORD} --ucp-ca "$(cat ucp-ca.pem)"
