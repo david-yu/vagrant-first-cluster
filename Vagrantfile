@@ -45,7 +45,6 @@ Vagrant.configure(2) do |config|
       SHELL
     end
 
-
     # Docker EE node for CentOS 7.3
     config.vm.define "ucp-node1" do |centos_ucp_node1|
       disk = '../vagrant-disks/vagrant-disk.vdi'

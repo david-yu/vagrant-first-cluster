@@ -25,6 +25,7 @@ sudo lvs -o+seg_monitor
 sudo mkdir /var/lib/docker.bk
 sudo sh -c "mv /var/lib/docker/* /var/lib/docker.bk"
 sudo sh -c "echo '{
+  \"dns\":  [\"172.17.0.1\"],
   \"storage-driver\": \"devicemapper\",
   \"storage-opts\": [
      \"dm.thinpooldev=/dev/mapper/docker-thinpool\",
@@ -32,6 +33,9 @@ sudo sh -c "echo '{
      \"dm.use_deferred_deletion=true\"
    ]
 }' >> /etc/docker/daemon.json"
+sudo sh -c "echo 'interface=vboxnet1
+listen-address=172.17.0.1' >> /etc/dnsmasq.d/docker-bridge.conf"
+sudo systemctl start dnsmasq
 sudo systemctl daemon-reload
 sudo systemctl start docker
 sudo usermod -aG docker vagrant
