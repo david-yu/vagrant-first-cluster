@@ -1,29 +1,23 @@
-# Login to Hub
-export HUB_USERNAME=$(cat /vagrant/hub_username)
-export HUB_PASSWORD=$(cat /vagrant/hub_password)
-docker login -u ${HUB_USERNAME} -p ${HUB_PASSWORD}
-
 # Join UCP Swarm
-ifconfig enp0s8 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}' > /vagrant/dtr-vancouver-node1-ipaddr
-cat /dev/urandom | tr -dc 'a-f0-9' | fold -w 12 | head -n 1 > /vagrant/dtr-replica-id
+< /dev/urandom tr -dc a-f0-9 | head -c${1:-12} > /vagrant/dtr-replica-id
+export UCP_IPADDR=172.28.128.31
+export DTR_IPADDR=172.28.128.34
 export UCP_PASSWORD=$(cat /vagrant/ucp_password)
 export SWARM_JOIN_TOKEN_WORKER=$(cat /vagrant/swarm-join-token-worker)
 export DTR_REPLICA_ID=$(cat /vagrant/dtr-replica-id)
-sudo sh -c "echo '${UCP_IPADDR} ucp.local' >> /etc/hosts"
-sudo sh -c "echo '${DTR_IPADDR} dtr.local' >> /etc/hosts"
-docker pull docker/ucp:2.1.4
 docker swarm join --token ${SWARM_JOIN_TOKEN_WORKER} ${UCP_IPADDR}:2377
 # Wait for Join to complete
 sleep 30
 # Install DTR
 curl -k https://ucp.local/ca > ucp-ca.pem
-docker run --rm docker/dtr:2.2.4 install --hub-username ${HUB_USERNAME} --hub-password ${HUB_PASSWORD} --ucp-url https://${UCP_IPADDR} --ucp-node dtr-node1.local --replica-id ${DTR_REPLICA_ID} --dtr-external-url https://dtr.local --ucp-username admin --ucp-password ${UCP_PASSWORD} --ucp-ca "$(cat ucp-ca.pem)"
+docker run --rm docker/dtr:2.2.4 install --ucp-url https://${UCP_IPADDR} --ucp-node dtr-node1.local --replica-id ${DTR_REPLICA_ID} --dtr-external-url https://dtr.local --ucp-username admin --ucp-password ${UCP_PASSWORD} --ucp-ca "$(cat ucp-ca.pem)"
 # Run backup of DTR
 docker run --rm docker/dtr:2.2.4 backup --ucp-url https://${UCP_IPADDR} --existing-replica-id ${DTR_REPLICA_ID} --ucp-username admin --ucp-password ${UCP_PASSWORD} --ucp-ca "$(cat ucp-ca.pem)" > /tmp/backup.tar
 # Trust self-signed DTR CA
-curl -k https://dtr.local/ca -o /etc/pki/ca-trust/source/anchors/dtr.local.crt
+sudo curl -k https://dtr.local/ca -o /etc/pki/ca-trust/source/anchors/dtr.local.crt
 sudo update-ca-trust
 sudo /bin/systemctl restart docker.service
+
 # Copy convenience scripts
 sudo cp -r /vagrant/scripts /home/ubuntu/scripts
 # Download UCP client bundle
