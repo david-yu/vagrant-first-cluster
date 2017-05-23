@@ -39,10 +39,12 @@ sudo sh -c "echo '{
      \"dm.use_deferred_deletion=true\"
    ]
 }' >> /etc/docker/daemon.json"
-sudo systemctl daemon-reload
 sudo systemctl start docker
 
 # Additional step for dnsmasq on localhost
 sudo sh -c "echo 'interface=vboxnet1
 listen-address=172.17.0.1' >> /etc/dnsmasq.d/docker-bridge.conf"
 sudo systemctl start dnsmasq
+
+docker swarm join-token manager | awk -F " " '/token/ {print $2}' > /vagrant/swarm-join-token-mgr
+docker swarm join-token worker | awk -F " " '/token/ {print $2}' > /vagrant/swarm-join-token-worker

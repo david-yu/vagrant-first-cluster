@@ -53,7 +53,7 @@ Vagrant.configure(2) do |config|
       centos_ucp_node1.landrush.tld = 'local'
       centos_ucp_node1.vm.hostname = "ucp-node1.local"
       centos_ucp_node1.landrush.enabled = true
-      config.vm.provider :virtualbox do |vb|
+      centos_ucp_node1.vm.provider :virtualbox do |vb|
         unless File.exist?(disk)
           vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
         end
@@ -84,7 +84,7 @@ Vagrant.configure(2) do |config|
       centos_ucp_node2.landrush.tld = 'local'
       centos_ucp_node2.vm.hostname = "ucp-node2.local"
       centos_ucp_node2.landrush.enabled = true
-      config.vm.provider :virtualbox do |vb|
+      centos_ucp_node2.vm.provider :virtualbox do |vb|
         unless File.exist?(disk)
           vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
         end
@@ -112,7 +112,7 @@ Vagrant.configure(2) do |config|
       centos_ucp_node3.landrush.tld = 'local'
       centos_ucp_node3.vm.hostname = "ucp-node3.local"
       centos_ucp_node3.landrush.enabled = true
-      config.vm.provider :virtualbox do |vb|
+      centos_ucp_node3.vm.provider :virtualbox do |vb|
         unless File.exist?(disk)
           vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
         end
@@ -140,7 +140,7 @@ Vagrant.configure(2) do |config|
       centos_dtr_node1.landrush.tld = 'local'
       centos_dtr_node1.vm.hostname = "dtr-node1.local"
       centos_dtr_node1.landrush.enabled = true
-      config.vm.provider :virtualbox do |vb|
+      centos_dtr_node1.vm.provider :virtualbox do |vb|
         unless File.exist?(disk)
           vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
         end
@@ -169,7 +169,7 @@ Vagrant.configure(2) do |config|
       centos_worker_node1.landrush.tld = 'local'
       centos_worker_node1.vm.hostname = "worker-node1.local"
       centos_worker_node1.landrush.enabled = true
-      config.vm.provider :virtualbox do |vb|
+      centos_worker_node1.vm.provider :virtualbox do |vb|
         unless File.exist?(disk)
           vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
         end
