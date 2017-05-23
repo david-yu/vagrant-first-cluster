@@ -1,16 +1,21 @@
 # Join UCP Swarm
+
+docker swarm join --token docker swarm join --token SWMTKN-1-52nvqn8avgbze9twpmeg9fk1akcove9rmrbkwmps72ukbfufi6-eaty6qj89k2nt08r6tit6bk0m 172.28.128.31:2377
+
+# Setup environment variables
+
 < /dev/urandom tr -dc a-f0-9 | head -c${1:-12} > /vagrant/dtr-replica-id
 export UCP_IPADDR=172.28.128.31
-export DTR_IPADDR=172.28.128.34
+export DTR_IPADDR==$(cat /vagrant/centos-dtr-node1)
 export UCP_PASSWORD=$(cat /vagrant/ucp_password)
 export DTR_REPLICA_ID=$(cat /vagrant/dtr-replica-id)
-docker swarm join --token SWMTKN-1-1xkrglei9xno157rs13z04q81jp10qvf8xh9lobb8b8c6jxry6-6pbomvl4pq13m6gh6j4kr8m0n 172.28.128.31:2377
 
 # Install DTR
 curl -k https://ucp.local/ca > ucp-ca.pem
 docker run --rm docker/dtr:2.2.4 install --ucp-url https://${UCP_IPADDR} --ucp-node dtr-node1.local --replica-id ${DTR_REPLICA_ID} --dtr-external-url https://dtr.local --ucp-username admin --ucp-password ${UCP_PASSWORD} --ucp-ca "$(cat ucp-ca.pem)"
 # Run backup of DTR
 docker run --rm docker/dtr:2.2.4 backup --ucp-url https://${UCP_IPADDR} --existing-replica-id ${DTR_REPLICA_ID} --ucp-username admin --ucp-password ${UCP_PASSWORD} --ucp-ca "$(cat ucp-ca.pem)" > /tmp/backup.tar
+
 # Trust self-signed DTR CA
 sudo curl -k https://dtr.local/ca -o /etc/pki/ca-trust/source/anchors/dtr.local.crt
 sudo update-ca-trust

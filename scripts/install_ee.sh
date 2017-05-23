@@ -1,3 +1,7 @@
+# Install NTP
+sudo yum -y install ntpdate net-tools
+sudo ntpdate -s time.nist.gov
+
 # Install Docker EE
 sudo yum remove docker docker-common container-selinux docker-selinux docker-engine
 sudo yum install -y yum-utils
@@ -7,8 +11,10 @@ sudo yum-config-manager --add-repo ${DOCKER_EE_URL}/docker-ee.repo
 sudo yum makecache fast
 sudo yum -y install docker-ee
 sudo systemctl start docker
+sudo usermod -aG docker vagrant
 
 # Configure DeviceMapper
+# https://docs.docker.com/engine/userguide/storagedriver/device-mapper-driver/#reads-with-the-devicemapper
 sudo systemctl stop docker
 sudo yum install -y lvm2
 sudo pvcreate /dev/sdb
@@ -33,9 +39,10 @@ sudo sh -c "echo '{
      \"dm.use_deferred_deletion=true\"
    ]
 }' >> /etc/docker/daemon.json"
+sudo systemctl daemon-reload
+sudo systemctl start docker
+
+# Additional step for dnsmasq on localhost
 sudo sh -c "echo 'interface=vboxnet1
 listen-address=172.17.0.1' >> /etc/dnsmasq.d/docker-bridge.conf"
 sudo systemctl start dnsmasq
-sudo systemctl daemon-reload
-sudo systemctl start docker
-sudo usermod -aG docker vagrant
