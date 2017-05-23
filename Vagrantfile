@@ -69,8 +69,10 @@ Vagrant.configure(2) do |config|
         sudo ntpdate -s time.nist.gov
         sudo cp /vagrant/scripts/install_ee.sh .
         sudo cp /vagrant/scripts/install_ucp.sh .
+        sudo cp /vagrant/scripts/create_tokens.sh .
         sudo chmod +x install_ee.sh
         sudo chmod +x install_ucp.sh
+        sudo chmod +x create_tokens.sh
         sudo hostname -I | awk '{print $2}' > /vagrant/centos-ucp-node1
         # ./install_ee.sh
      SHELL
